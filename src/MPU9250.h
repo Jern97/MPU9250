@@ -62,6 +62,7 @@ class MPU9250{
       LP_ACCEL_ODR_500HZ = 11
     };
     MPU9250(TwoWire &bus,uint8_t address);
+    MPU9250(SPIClass &bus,uint8_t csPin);
     int begin();
     int setAccelRange(AccelRange range);
     int setDlpfBandwidth(DlpfBandwidth bandwidth);
@@ -90,6 +91,14 @@ class MPU9250{
     TwoWire *_i2c;
     const uint32_t _i2cRate = 400000; // 400 kHz
     size_t _numBytes; // number of bytes received from I2C
+    // spi
+    SPIClass *_spi;
+    uint8_t _csPin;
+    bool _useSPI;
+    bool _useSPIHS;
+    const uint8_t SPI_READ = 0x80;
+    const uint32_t SPI_LS_CLOCK = 1000000;  // 1 MHz
+    const uint32_t SPI_HS_CLOCK = 15000000; // 15 MHz
     // track success of interacting with sensor
     int _status;
     // buffer for reading from sensor
